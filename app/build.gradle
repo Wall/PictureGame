@@ -4,6 +4,20 @@ android {
     compileSdkVersion 20
     buildToolsVersion "20.0.0"
 
+    signingConfigs {
+        release {
+            storeFile file("C:\\Users\\clazell\\TestKeyStore.jks")
+            storePassword "android"
+            keyAlias "testkey"
+            keyPassword "android"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     defaultConfig {
         applicationId "com.bluewall.picturegame"
         minSdkVersion 15
@@ -11,14 +25,16 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
 }
 
 dependencies {
+    compile 'com.jakewharton:butterknife:5.1.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:20.0.+'
+    compile 'com.google.android.gms:play-services:5+'
+
+
 }
+
+
