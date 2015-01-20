@@ -1,12 +1,19 @@
 package com.bluewall.picturegame;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -20,12 +27,22 @@ import com.google.android.gms.plus.Plus;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapEmbedder;
+import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
+import com.bluewall.picturegame.task.ImgurDownloadTask;
+import com.bluewall.picturegame.task.ImgurUploadTask;
 
 public class MainActivity extends Activity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
-    final static String TAG = "Image Hunt";
+	final static String TAG = "Image Hunt";
+    public static Context context;
+    
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
 
@@ -42,10 +59,11 @@ public class MainActivity extends Activity
     // Set to false to require the user to click the button in order to sign in.
     private boolean mAutoStartSignInFlow = true;
 
+
     @InjectView(R.id.button_sign_in)
-    com.google.android.gms.common.SignInButton logInButton;
+    com.google.android.gms.common.SignInButton logInButton;{
 
-
+    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +80,11 @@ public class MainActivity extends Activity
                 .build();
 
         logInButton.setOnClickListener(this);
+		
+		context = getApplicationContext();
 
+        ImageView iv = (ImageView) findViewById(R.id.img_question);
+        imgurUploadTest();
     }
 
     @Override
@@ -134,6 +156,34 @@ public class MainActivity extends Activity
 
     }
 
+    @SuppressLint("NewApi")
+    public void imgurUploadTest() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rubbish);
+        Uri uri = BitmapUtils.getImageUri(getAppContext(), bitmap);
+        new ImgurUploadTask(uri, this) {
+            @Override
+            protected void onPostExecute(String id) {
+                String url = "http://i.imgur.com/" + id + ".jpg";
+                System.out.println("URL: " + url);
+                imgurDownloadTest(url);
+            }
+        }.execute();
+    }
+
+    @SuppressLint("NewApi")
+    public void imgurDownloadTest(String url) {
+        final ImageView test = (ImageView) findViewById(R.id.img_test);
+        new ImgurDownloadTask("http://i.imgur.com/aFpCLtj.jpg") {
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap != null) {
+                    test.setImageBitmap(bitmap);
+                } else {
+                    Log.i(TAG, "Bitmap null");
+                }
+            }
+        }.execute();
+    }
 
 
     @Override
@@ -312,5 +362,9 @@ public class MainActivity extends Activity
     // Clears the flag that keeps the screen on.
     void stopKeepingScreenOn() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    public static Context getAppContext() {
+        return context;
     }
 }
