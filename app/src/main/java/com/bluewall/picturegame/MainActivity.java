@@ -27,11 +27,8 @@ import com.google.android.gms.plus.Plus;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapEmbedder;
 import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
 import com.bluewall.picturegame.task.ImgurUploadTask;
@@ -61,13 +58,14 @@ public class MainActivity extends Activity
 
 
     @InjectView(R.id.button_sign_in)
-    com.google.android.gms.common.SignInButton logInButton;{
+    com.google.android.gms.common.SignInButton logInButton;
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = getApplicationContext();
 
         ButterKnife.inject(this);
 
@@ -80,11 +78,8 @@ public class MainActivity extends Activity
                 .build();
 
         logInButton.setOnClickListener(this);
-		
-		context = getApplicationContext();
 
-        ImageView iv = (ImageView) findViewById(R.id.img_question);
-        imgurUploadTest();
+        //imgurUploadTest();
     }
 
     @Override
@@ -156,7 +151,6 @@ public class MainActivity extends Activity
 
     }
 
-    @SuppressLint("NewApi")
     public void imgurUploadTest() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rubbish);
         Uri uri = BitmapUtils.getImageUri(getAppContext(), bitmap);
@@ -170,10 +164,9 @@ public class MainActivity extends Activity
         }.execute();
     }
 
-    @SuppressLint("NewApi")
     public void imgurDownloadTest(String url) {
         final ImageView test = (ImageView) findViewById(R.id.img_test);
-        new ImgurDownloadTask("http://i.imgur.com/aFpCLtj.jpg") {
+        new ImgurDownloadTask(url) {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 if (bitmap != null) {
