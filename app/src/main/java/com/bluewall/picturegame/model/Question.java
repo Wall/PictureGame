@@ -1,19 +1,47 @@
 package com.bluewall.picturegame.model;
 
-import android.graphics.Bitmap;
-import android.media.Image;
-
 /**
  * Created by glipscombe on 12/01/2015.
  */
 public class Question {
 
-    private Bitmap image;
+    private String imageLink;
     private String question;
     private String answer;
+    private boolean isCurrent;
 
-    public Question(Bitmap image, String question, String answer){
-        this.image = image;
+    public void setImage(String image) {
+        this.imageLink = image;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public boolean isCurrent() {
+        return isCurrent;
+    }
+
+    public void setCurrent(boolean isCurrent) {
+        this.isCurrent = isCurrent;
+    }
+
+
+
+    public Question(){
+
+    }
+
+    public Question(String image, String question, String answer){
+        this.imageLink = image;
         this.question = question;
         this.answer = answer;
     }
@@ -23,12 +51,13 @@ public class Question {
         return true;
     }
 
+
     public String getQuestion(){
         return question;
     }
 
-    public Bitmap getImage(){
-        return image;
+    public String getImage(){
+        return imageLink;
     }
 
 

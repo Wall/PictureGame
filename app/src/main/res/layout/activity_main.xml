@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
    Copyright (C) 2013 Google Inc.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,60 +18,41 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <!-- SIGN-IN SCREEN -->
-    <LinearLayout
-        android:id="@+id/screen_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <LinearLayout android:id="@+id/screen_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/button_sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
-
-        <ImageView
-            android:id="@+id/img_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@android:drawable/btn_dialog" />
-
-        <TextView
-            android:id="@+id/txt_question"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="Question" />
-
-        <ImageView
-            android:id="@+id/img_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@android:drawable/btn_dialog" />
-
-        <!-- Test buttons, remove later -->
-        <Button
-            android:id="@+id/button_capture_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_capture_text"
-            android:layout_gravity="center_horizontal"/>
-
-        <Button
-            android:id="@+id/button_select_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_select_text"
-            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="push"
+        android:id="@+id/pushbutton2"
+        android:layout_gravity="right|top" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:text="retrieve"
+        android:id="@+id/retrievebutton"
+        android:layout_gravity="center_horizontal|top" />
+
+    <com.google.android.gms.common.SignInButton android:id="@+id/button_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|top" />
+
+    <EditText
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_weight="1"
+        android:layout_gravity="center" />
 
     <!-- MAIN SCREEN -->
 

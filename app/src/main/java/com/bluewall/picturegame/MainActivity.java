@@ -1,57 +1,50 @@
 package com.bluewall.picturegame;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bluewall.picturegame.model.Question;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.plus.Plus;
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-import android.widget.Button;
-import android.widget.ImageView;
-
-import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
-import com.bluewall.picturegame.task.ImgurDownloadTask;
-import com.bluewall.picturegame.task.ImgurUploadTask;
-
-import java.util.List;
 
 public class MainActivity extends Activity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
-	final static String TAG = "Image Hunt";
-    public static Context context;
-    
+    final static String TAG = "Image Hunt";
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-
-    // Request codes for selecting or capturing images for questions
-    private static final int RC_GALLERY_IMAGE = 1001;
-    private static final int RC_CAPTURE_IMAGE = 1002;
 
     // Client used to interact with Google APIs.
     private GoogleApiClient mGoogleApiClient;
@@ -64,21 +57,38 @@ public class MainActivity extends Activity
 
     // Set to true to automatically start the sign in flow when the Activity starts.
     // Set to false to require the user to click the button in order to sign in.
-    private boolean mAutoStartSignInFlow = true;
-
+    private boolean mAutoStartSignInFlow = false;
 
     @InjectView(R.id.button_sign_in)
     com.google.android.gms.common.SignInButton logInButton;
+
+    @InjectView(R.id.retrievebutton)
+    Button retrievebutton;
+
+    @InjectView(R.id.pushbutton2)
+    Button pushbutton2;
+
+    @InjectView(R.id.editText)
+    EditText editText;
+
+    private View v;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        context = getApplicationContext();
+        setContentView(R.layout.con_frag);
 
-        ButterKnife.inject(this);
+        //ButterKnife.inject(this);
+        if (savedInstanceState == null) {
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new QuestionFragment())
+                    .commit();
+        }
+       // setContentView(R.layout.activity_main);
+
 
         // Create the Google Api Client with access to Plus and Games
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -88,13 +98,107 @@ public class MainActivity extends Activity
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .build();
 
-        logInButton.setOnClickListener(this);
+       /* logInButton.setOnClickListener(this);
+        retrievebutton.setOnClickListener(this);
+        pushbutton2.setOnClickListener(this);
+*/
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
 
-        //imgurUploadTest();
+        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
+
     }
 
-    @Override
-    public void onClick(View v) {
+    public static class QuestionFragment extends Fragment {
+
+        @InjectView(R.id.button)
+        Button button;
+
+        @InjectView(R.id.editText2)
+        EditText editQText;
+
+        @InjectView(R.id.editText3)
+        EditText editAText;
+
+        @InjectView(R.id.editText4)
+        EditText editLText;
+
+        public QuestionFragment() {
+    }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.question_screen, container, false);
+        ButterKnife.inject(this, rootView);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        return rootView;
+    }
+
+
+    }
+
+    @OnClick({R.id.pushbutton2,  R.id.retrievebutton, R.id.button_sign_in })
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.pushbutton2:
+                oncClick();
+                break;
+            case R.id.retrievebutton:
+                onbClick();
+                break;
+            case R.id.button_sign_in:
+                onSignInClick();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void oncClick() {
+        Log.i(TAG, "pushbutton2 clicked");
+        ParseObject question = new ParseObject("question");
+        question.put("question", "How much wood would a woodchuck chuck if a woodchuck could chuck wood");
+        question.put("answer", "none");
+        question.put("imageLink", "www.google.com");
+
+        question.saveInBackground();
+    }
+
+    public void onbClick() {
+        Log.i(TAG, "onbClick clicked");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
+        query.getInBackground("2WkA4eyX00", new GetCallback<ParseObject>() {
+            public void done(ParseObject object, com.parse.ParseException e) {
+                if (e == null) {
+
+                    Question currentQuestion = new Question();
+                    currentQuestion.setQuestion(object.getString("question"));
+                    currentQuestion.setAnswer(object.getString("answer"));
+                    currentQuestion.setImage(object.getString("imageLink"));
+
+                    editText.setText(currentQuestion.getQuestion());
+
+                } else {
+                    Log.i(TAG,"Couldnt pull down");
+                }
+            }
+
+
+        });
+
+    }
+
+
+    public void onSignInClick() {
                 Log.i(TAG, "Sign-in button clicked");
                 mSignInClicked = true;
                 mGoogleApiClient.connect();
@@ -119,20 +223,6 @@ public class MainActivity extends Activity
                 } else {
                     showActivityResultError(this, requestCode, responseCode, R.string.signin_other_error);
                 }
-                break;
-
-            //The returned uri from capture or select can be used directly in the imgur upload if we want
-            case RC_CAPTURE_IMAGE:
-                Log.d(TAG, "onActivityResult: captured by camera");
-            case RC_GALLERY_IMAGE:
-                //Do something with the returned image
-                if(intent!= null && intent.getData()!=null) {
-                    Log.d(TAG, "onActivityResult: selected image uri =" + intent.getData().toString());
-                    handleSelectedImage(intent.getData());
-                }else{
-                    Log.d(TAG, "onActivityResult: no image selected or returned");
-                }
-
                 break;
         }
         super.onActivityResult(requestCode, responseCode, intent);
@@ -172,37 +262,7 @@ public class MainActivity extends Activity
 
         startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
                 getString(R.string.leaderBoardID)), REQUEST_LEADERBOARD);
-
-
     }
-
-    public void imgurUploadTest() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rubbish);
-        Uri uri = BitmapUtils.getImageUri(getAppContext(), bitmap);
-        new ImgurUploadTask(uri, this) {
-            @Override
-            protected void onPostExecute(String id) {
-                String url = "http://i.imgur.com/" + id + ".jpg";
-                System.out.println("URL: " + url);
-                imgurDownloadTest(url);
-            }
-        }.execute();
-    }
-
-    public void imgurDownloadTest(String url) {
-        final ImageView test = (ImageView) findViewById(R.id.img_test);
-        new ImgurDownloadTask(url) {
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null) {
-                    test.setImageBitmap(bitmap);
-                } else {
-                    Log.i(TAG, "Bitmap null");
-                }
-            }
-        }.execute();
-    }
-
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -226,7 +286,7 @@ public class MainActivity extends Activity
                     connectionResult, RC_SIGN_IN, getString(R.string.signin_other_error));
         }
 
-        switchToScreen(R.id.screen_sign_in);
+     //   switchToScreen(R.id.screen_sign_in);
     }
 
     /*
@@ -248,11 +308,6 @@ public class MainActivity extends Activity
 
         return isCorrect;
     }
-
-
-
-
-
 
     /*
      * COMMUNICATIONS SECTION. Methods that implement the game's network
@@ -363,42 +418,6 @@ public class MainActivity extends Activity
 
         errorDialog.show();
     }
-
-    /*
-     * IMAGE SECTION. Methods for handling the selection of images from the file system
-     */
-
-
-    //do something with the image, eg. save to phone or imgur
-    private void handleSelectedImage(Uri imageUri){
-
-    }
-
-    //Use the camera to capture an image
-    @OnClick(R.id.button_capture_image)
-    public void startImageCaptureIntent(){
-        Intent intent = new Intent();
-        intent.setAction("android.media.action.IMAGE_CAPTURE");
-        startActivityForResult(intent, RC_CAPTURE_IMAGE);
-    }
-
-    //Select an image from the gallery
-    @OnClick(R.id.button_select_image)
-    public void startImageSelectIntent(){
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_PICK);
-        intent.setType("image/*");
-
-        List<ResolveInfo> list = getPackageManager()
-                .queryIntentActivities(intent,
-                        PackageManager.MATCH_DEFAULT_ONLY);
-        if (list.size() <= 0) {
-            Log.d(TAG, "no photo picker intent on this hardware");
-            return;
-        }
-        startActivityForResult(intent, RC_GALLERY_IMAGE);
-    }
-
     /*
      * MISC SECTION. Miscellaneous methods.
      */
@@ -418,7 +437,5 @@ public class MainActivity extends Activity
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public static Context getAppContext() {
-        return context;
-    }
+
 }

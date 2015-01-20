@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_id">866950313297</string>
+
     <string name="app_name">PictureGame</string>
     <string name="action_settings">Settings</string>
         <string name="signing_in">Signing in with Google</string>
@@ -18,7 +19,6 @@
         <string name="license_failed">License check failed.</string>
         <string name="unknown_error">Unknown error.</string>
 
-    <string name="button_capture_text">Capture</string>
-    <string name="button_select_text">Select</string>
-
+    <string name="parse_app_id">xH63fd8KqSVYUDOVaY98WPqeRU6e8Yw29E1PbI52</string>
+    <string name="parse_client_id">ip0WZMb6A3HPDdJvAfmo4MXGipdfmqHMznysu5JX</string>
 </resources>
