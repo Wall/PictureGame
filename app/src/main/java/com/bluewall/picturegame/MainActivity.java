@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -26,12 +28,16 @@ import com.google.android.gms.plus.Plus;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
 import com.bluewall.picturegame.task.ImgurUploadTask;
+
+import java.util.List;
 
 public class MainActivity extends Activity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -42,6 +48,10 @@ public class MainActivity extends Activity
     
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
+
+    // Request codes for selecting or capturing images for questions
+    private static final int RC_GALLERY_IMAGE = 1001;
+    private static final int RC_CAPTURE_IMAGE = 1002;
 
     // Client used to interact with Google APIs.
     private GoogleApiClient mGoogleApiClient;
@@ -59,6 +69,7 @@ public class MainActivity extends Activity
 
     @InjectView(R.id.button_sign_in)
     com.google.android.gms.common.SignInButton logInButton;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +119,20 @@ public class MainActivity extends Activity
                 } else {
                     showActivityResultError(this, requestCode, responseCode, R.string.signin_other_error);
                 }
+                break;
+
+            //The returned uri from capture or select can be used directly in the imgur upload if we want
+            case RC_CAPTURE_IMAGE:
+                Log.d(TAG, "onActivityResult: captured by camera");
+            case RC_GALLERY_IMAGE:
+                //Do something with the returned image
+                if(intent!= null && intent.getData()!=null) {
+                    Log.d(TAG, "onActivityResult: selected image uri =" + intent.getData().toString());
+                    handleSelectedImage(intent.getData());
+                }else{
+                    Log.d(TAG, "onActivityResult: no image selected or returned");
+                }
+
                 break;
         }
         super.onActivityResult(requestCode, responseCode, intent);
@@ -338,6 +363,42 @@ public class MainActivity extends Activity
 
         errorDialog.show();
     }
+
+    /*
+     * IMAGE SECTION. Methods for handling the selection of images from the file system
+     */
+
+
+    //do something with the image, eg. save to phone or imgur
+    private void handleSelectedImage(Uri imageUri){
+
+    }
+
+    //Use the camera to capture an image
+    @OnClick(R.id.button_capture_image)
+    public void startImageCaptureIntent(){
+        Intent intent = new Intent();
+        intent.setAction("android.media.action.IMAGE_CAPTURE");
+        startActivityForResult(intent, RC_CAPTURE_IMAGE);
+    }
+
+    //Select an image from the gallery
+    @OnClick(R.id.button_select_image)
+    public void startImageSelectIntent(){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setType("image/*");
+
+        List<ResolveInfo> list = getPackageManager()
+                .queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        if (list.size() <= 0) {
+            Log.d(TAG, "no photo picker intent on this hardware");
+            return;
+        }
+        startActivityForResult(intent, RC_GALLERY_IMAGE);
+    }
+
     /*
      * MISC SECTION. Miscellaneous methods.
      */

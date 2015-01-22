@@ -18,4 +18,7 @@
         <string name="license_failed">License check failed.</string>
         <string name="unknown_error">Unknown error.</string>
 
+    <string name="button_capture_text">Capture</string>
+    <string name="button_select_text">Select</string>
+
 </resources>
