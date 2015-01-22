@@ -2,6 +2,7 @@ package com.bluewall.picturegame.task;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,10 +28,20 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
 
     private Activity mActivity;
     private Uri mImageUri;  // local Uri to upload
+    ProgressDialog myPd_ring;
 
     public ImgurUploadTask(Uri imageUri, Activity activity) {
         this.mImageUri = imageUri;
         this.mActivity = activity;
+    }
+
+    @Override
+    protected void onPreExecute() {
+
+        myPd_ring  = new ProgressDialog(mActivity);
+        myPd_ring.setMessage("Saving Image");
+        myPd_ring.show();
+
     }
 
     @Override
@@ -59,6 +70,7 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
 
             if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 responseIn = conn.getInputStream();
+                myPd_ring.dismiss();
                 return onInput(responseIn);
             }
             else {
@@ -70,6 +82,7 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
                     sb.append(scanner.next());
                 }
                 Log.i(TAG, "error response: " + sb.toString());
+                myPd_ring.dismiss();
                 return null;
             }
         } catch (Exception ex) {
@@ -86,6 +99,12 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
                 imageIn.close();
             } catch (Exception ignore) {}
         }
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        myPd_ring.dismiss();
     }
 
     private static int copy(InputStream input, OutputStream output) throws IOException {

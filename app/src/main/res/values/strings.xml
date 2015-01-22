@@ -21,4 +21,7 @@
 
     <string name="parse_app_id">xH63fd8KqSVYUDOVaY98WPqeRU6e8Yw29E1PbI52</string>
     <string name="parse_client_id">ip0WZMb6A3HPDdJvAfmo4MXGipdfmqHMznysu5JX</string>
+
+    <string name="button_capture_text">Capture</string>
+    <string name="button_select_text">Select</string>
 </resources>

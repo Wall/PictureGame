@@ -6,6 +6,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +25,8 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.plus.Plus;
 import com.parse.Parse;
 import com.parse.ParseObject;
+
+import java.util.List;
 
 import butterknife.OnClick;
 
@@ -47,6 +52,8 @@ public class MainActivity extends Activity
     private boolean mAutoStartSignInFlow = false;
 
     private View v;
+
+
 
   // private final String LEADERBOARD_ID = getString(R.string.leaderBoardID);
 
@@ -106,6 +113,7 @@ public static Context context;
                     showActivityResultError(this, requestCode, responseCode, R.string.signin_other_error);
                 }
                 break;
+
         }
         super.onActivityResult(requestCode, responseCode, intent);
     }
@@ -134,7 +142,7 @@ public static Context context;
                 .commit();
     }
 
-    public void increaseScore(){
+  /*  public void increaseScore(){
         //TODO: vv
        // Games.Leaderboards.submitScore(mGoogleApiClient, LEADERBOARD_ID, 1);
     }
@@ -144,7 +152,7 @@ public static Context context;
 
          startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
                 getString(R.string.leaderBoardID)), REQUEST_LEADERBOARD);
-    }
+    }*/
 
     public static String getPlayerId(){
         String playerId = Games.Players.getCurrentPlayerId(mGoogleApiClient);
@@ -273,4 +281,8 @@ public static Context context;
     public static GoogleApiClient getGoogleShiz(){
         return mGoogleApiClient;
     }
+
+
+
+
 }

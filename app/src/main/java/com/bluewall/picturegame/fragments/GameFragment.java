@@ -153,22 +153,22 @@ public class GameFragment extends Fragment {
                 if (e == null) {
 
                     ParseObject question = new ParseObject("question");
+
                     question.put("question",object.getString("question"));
                     question.put("answer", object.getString("answer"));
-
-                    // TODO: vvv When image capture is put in replace this hardcoded string vvv
-//                    question.put("imageLink", "http://i.imgur.com/eJNnNUI.png");//object.getString("imageLink")
-
+                    question.put("imageLink", object.getString("imageLink"));//object.getString("imageLink")
                     question.put("isActive",true);
                     question.put("playerID",object.getString("playerID"));
 
                     question.saveInBackground();
+                    question.unpinInBackground();
 
                 } else {
 
                 }
             }
         });
+
     }
 
     public void imgurDownloadTest(String url) {

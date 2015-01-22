@@ -13,6 +13,7 @@ import com.bluewall.picturegame.R;
 import com.google.android.gms.games.Games;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by clazell on 22/01/2015.
@@ -32,7 +33,7 @@ public class WinScreenFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.win_screen, container, false);
         ButterKnife.inject(this, rootView);
 
-        Games.Leaderboards.submitScore(MainActivity.getGoogleShiz(), getString(R.string.leaderBoardID), 1);
+        Games.Leaderboards.submitScore(MainActivity.getGoogleShiz(), getString(R.string.leaderBoardID), +1);
 
         int REQUEST_LEADERBOARD = 100;
 
@@ -41,6 +42,13 @@ public class WinScreenFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
+    }
+
+    @OnClick(R.id.backButton)
+    public void back(){
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new GameFragment())
+                .commit();
     }
 
 }

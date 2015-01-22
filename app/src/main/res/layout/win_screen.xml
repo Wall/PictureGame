@@ -10,4 +10,11 @@
         android:text="You are winner HAHAHAHA"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to game"
+        android:id="@+id/backButton"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
