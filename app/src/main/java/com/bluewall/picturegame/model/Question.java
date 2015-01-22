@@ -10,6 +10,16 @@ public class Question {
     private String answer;
     private boolean isCurrent;
 
+    public String getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(String playerID) {
+        this.playerID = playerID;
+    }
+
+    private String playerID;
+
     public void setImage(String image) {
         this.imageLink = image;
     }
@@ -44,6 +54,7 @@ public class Question {
         this.imageLink = image;
         this.question = question;
         this.answer = answer;
+
     }
 
     public boolean isCorrectAnswer(String selectedAnswer){
