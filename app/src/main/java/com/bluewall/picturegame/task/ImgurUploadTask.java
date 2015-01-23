@@ -38,7 +38,7 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
 
-        myPd_ring  = new ProgressDialog(mActivity);
+        myPd_ring = new ProgressDialog(mActivity);
         myPd_ring.setMessage("Saving Image");
         myPd_ring.show();
 
@@ -72,8 +72,7 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
                 responseIn = conn.getInputStream();
                 myPd_ring.dismiss();
                 return onInput(responseIn);
-            }
-            else {
+            } else {
                 Log.i(TAG, "responseCode=" + conn.getResponseCode());
                 responseIn = conn.getErrorStream();
                 StringBuilder sb = new StringBuilder();
@@ -91,13 +90,16 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
         } finally {
             try {
                 responseIn.close();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
             try {
                 conn.disconnect();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
             try {
                 imageIn.close();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
     }
 

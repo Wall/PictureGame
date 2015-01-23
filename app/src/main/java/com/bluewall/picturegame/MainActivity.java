@@ -6,15 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.bluewall.picturegame.fragments.GameFragment;
 import com.bluewall.picturegame.fragments.QuestionFragment;
 import com.bluewall.picturegame.fragments.SignInFragment;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,15 +20,10 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.plus.Plus;
 import com.parse.Parse;
-import com.parse.ParseObject;
-
-import java.util.List;
-
-import butterknife.OnClick;
 
 
 public class MainActivity extends Activity
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     final static String TAG = "Image Hunt";
     // Request code used to invoke sign in user interactions.
@@ -53,28 +44,29 @@ public class MainActivity extends Activity
 
     private View v;
 
-
-
-  // private final String LEADERBOARD_ID = getString(R.string.leaderBoardID);
-
-public static Context context;
+    public static Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.con_frag);
         context = getApplicationContext();
 
-        if (savedInstanceState == null) {
+        Parse.enableLocalDatastore(context);
 
+        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
+
+        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new SignInFragment())
                     .commit();
         }
 
         // Create the Google Api Client with access to Plus and Games
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
@@ -82,26 +74,20 @@ public static Context context;
                 .build();
 
         // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-
-        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
 
     }
 
     public static void onSignInClick() {
-                Log.i(TAG, "Sign-in button clicked");
-                mSignInClicked = true;
-                mGoogleApiClient.connect();
+        Log.i(TAG, "Sign-in button clicked");
+        mSignInClicked = true;
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onActivityResult(int requestCode, int responseCode,
                                  Intent intent) {
         super.onActivityResult(requestCode, responseCode, intent);
-
         switch (requestCode) {
-
-
             case RC_SIGN_IN:
                 Log.d(TAG, "onActivityResult with requestCode == RC_SIGN_IN, responseCode="
                         + responseCode + ", intent=" + intent);
@@ -113,14 +99,12 @@ public static Context context;
                     showActivityResultError(this, requestCode, responseCode, R.string.signin_other_error);
                 }
                 break;
-
         }
         super.onActivityResult(requestCode, responseCode, intent);
     }
 
     @Override
     public void onStart() {
-
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             Log.w(TAG,
                     "GameHelper: client was already connected on onStart()");
@@ -134,7 +118,6 @@ public static Context context;
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.d(TAG, "onConnected() called. Sign in successful!");
-
         Log.d(TAG, "Sign-in succeeded.");
 
         getFragmentManager().beginTransaction()
@@ -142,21 +125,8 @@ public static Context context;
                 .commit();
     }
 
-  /*  public void increaseScore(){
-        //TODO: vv
-       // Games.Leaderboards.submitScore(mGoogleApiClient, LEADERBOARD_ID, 1);
-    }
-    public void getLeaderBoard(){
-
-        int REQUEST_LEADERBOARD = 100;
-
-         startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
-                getString(R.string.leaderBoardID)), REQUEST_LEADERBOARD);
-    }*/
-
-    public static String getPlayerId(){
-        String playerId = Games.Players.getCurrentPlayerId(mGoogleApiClient);
-        return playerId;
+    public static String getPlayerId() {
+        return Games.Players.getCurrentPlayerId(mGoogleApiClient);
     }
 
     @Override
@@ -168,23 +138,19 @@ public static Context context;
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed() called, result: " + connectionResult);
-
         if (mResolvingConnectionFailure) {
             Log.d(TAG, "onConnectionFailed() ignoring connection failure; already resolving.");
             return;
         }
-
         if (mSignInClicked || mAutoStartSignInFlow) {
             mAutoStartSignInFlow = false;
             mSignInClicked = false;
             mResolvingConnectionFailure = resolveConnectionFailure(this, mGoogleApiClient,
                     connectionResult, RC_SIGN_IN, getString(R.string.signin_other_error));
         }
-
-        //switchToScreen(R.id.screen_sign_in);
     }
 
-       public static Dialog makeSimpleDialog(Activity activity, String text) {
+    public static Dialog makeSimpleDialog(Activity activity, String text) {
         return (new AlertDialog.Builder(activity)).setMessage(text)
                 .setNeutralButton(android.R.string.ok, null).create();
     }
@@ -192,7 +158,6 @@ public static Context context;
     public static boolean resolveConnectionFailure(Activity activity,
                                                    GoogleApiClient client, ConnectionResult result, int requestCode,
                                                    String fallbackErrorMessage) {
-
         if (result.hasResolution()) {
             try {
                 result.startResolutionForResult(activity, requestCode);
@@ -256,7 +221,6 @@ public static Context context;
                     errorDialog = makeSimpleDialog(activity, activity.getString(errorDescription));
                 }
         }
-
         errorDialog.show();
     }
 
@@ -278,11 +242,9 @@ public static Context context;
         return context;
     }
 
-    public static GoogleApiClient getGoogleShiz(){
+    public static GoogleApiClient getGoogleShiz() {
         return mGoogleApiClient;
     }
-
-
 
 
 }

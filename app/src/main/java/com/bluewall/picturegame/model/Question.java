@@ -45,29 +45,28 @@ public class Question {
     }
 
 
-
-    public Question(){
+    public Question() {
 
     }
 
-    public Question(String image, String question, String answer){
+    public Question(String image, String question, String answer) {
         this.imageLink = image;
         this.question = question;
         this.answer = answer;
 
     }
 
-    public boolean isCorrectAnswer(String selectedAnswer){
+    public boolean isCorrectAnswer(String selectedAnswer) {
         // Check if the entered answer is correct
         return true;
     }
 
 
-    public String getQuestion(){
+    public String getQuestion() {
         return question;
     }
 
-    public String getImage(){
+    public String getImage() {
         return imageLink;
     }
 

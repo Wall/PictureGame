@@ -36,6 +36,8 @@ public class SignInFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_main, container, false);
         ButterKnife.inject(this, rootView);
 
+
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
     }

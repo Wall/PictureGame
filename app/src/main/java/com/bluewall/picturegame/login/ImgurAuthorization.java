@@ -29,7 +29,8 @@ public class ImgurAuthorization {
 
     static final String SHARED_PREFERENCES_NAME = "imgur_example_auth";
 
-    private ImgurAuthorization() {}
+    private ImgurAuthorization() {
+    }
 
     public static ImgurAuthorization getInstance() {
         if (INSTANCE == null)
@@ -38,7 +39,7 @@ public class ImgurAuthorization {
     }
 
     public boolean isLoggedIn() {
-            Context context = MainActivity.getAppContext();
+        Context context = MainActivity.getAppContext();
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, 0);
         return !TextUtils.isEmpty(prefs.getString("access_token", null));
     }
@@ -50,8 +51,7 @@ public class ImgurAuthorization {
 
         if (!TextUtils.isEmpty(accessToken)) {
             conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-        }
-        else {
+        } else {
             conn.setRequestProperty("Authorization", "Client-ID " + Constants.MY_IMGUR_CLIENT_ID);
         }
     }
@@ -102,8 +102,7 @@ public class ImgurAuthorization {
                 InputStream in = conn.getInputStream();
                 handleAccessTokenResponse(in);
                 in.close();
-            }
-            else {
+            } else {
                 Log.i(TAG, "responseCode=" + conn.getResponseCode());
                 InputStream errorStream = conn.getErrorStream();
                 StringBuilder sb = new StringBuilder();
@@ -123,7 +122,8 @@ public class ImgurAuthorization {
         } finally {
             try {
                 conn.disconnect();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
     }
 
@@ -135,11 +135,11 @@ public class ImgurAuthorization {
         }
 
         JSONObject root = new JSONObject(sb.toString());
-        String accessToken      = root.getString("access_token");
-        String refreshToken     = root.getString("refresh_token");
-        long expiresIn          = root.getLong("expires_in");
-        String tokenType        = root.getString("token_type");
-        String accountUsername  = root.getString("account_username");
+        String accessToken = root.getString("access_token");
+        String refreshToken = root.getString("refresh_token");
+        long expiresIn = root.getLong("expires_in");
+        String tokenType = root.getString("token_type");
+        String accountUsername = root.getString("account_username");
 
         Context context = MainActivity.getAppContext();
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, 0)

@@ -18,10 +18,11 @@ public class ImgurDownloadTask extends AsyncTask<Void, Void, Bitmap> {
     public ImgurDownloadTask(String url) {
         this.url = url;
     }
+
     @Override
     protected Bitmap doInBackground(Void... params) {
         try {
-           return BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+            return BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

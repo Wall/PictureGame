@@ -1,5 +1,6 @@
 package com.bluewall.picturegame.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,13 +18,10 @@ import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
 import com.bluewall.picturegame.model.Question;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -56,7 +54,6 @@ public class GameFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -82,7 +79,6 @@ public class GameFragment extends Fragment {
                     currentQuestion.setAnswer(object.getString("answer"));
                     currentQuestion.setImage(object.getString("imageLink"));
                     currentQuestion.setPlayerID(object.getString("playerID"));
-
                     questionText.setText(currentQuestion.getQuestion());
                     imgurDownloadTest(currentQuestion.getImage());
                 }
@@ -100,32 +96,27 @@ public class GameFragment extends Fragment {
         Log.i(TAG, currentQuestion.getAnswer());
 
         // Make sure the player is not answering their own question
-        if(!currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
+        if (!currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
             // TODO: Currently using a dirty equals for testing, will be updated with davids check alg.
             if (editTextAnswer.getText().toString().equals(currentQuestion.getAnswer())) {
-
-                // TODO: vvv Not fleshed out yet vvv
                 updateOldQuestion();
-
-                // TODO: If correct, update the current Question to be non active and upload new question from users local data
                 Log.i(TAG, "Correct");
                 uploadNewQuestion();
 
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, new WinScreenFragment())
                         .commit();
-
-               // MainActivity.increaseScore();
             }
-        }else{
+        } else {
             Log.i(TAG, "Don't answer your own question ya pretzel");
+            new AlertDialog.Builder(getActivity()).setMessage("Don't answer your own question ya pretzel")
+                    .setNeutralButton(android.R.string.ok, null).create().show();
         }
 
     }
 
-    public void updateOldQuestion(){
-        //TODO: update the past question to not active on parse end
-
+    // sets the old question to false and the next question to true
+    public void updateOldQuestion() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
         query.whereEqualTo("isActive", true);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -133,32 +124,53 @@ public class GameFragment extends Fragment {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
-                    // TODO: If we cant get the object try again ??
+                    // TODO: If we cant get the What do??
                     Log.i(TAG, "Couldnt pull down " + e);
 
                 } else {
 
-                    object.put("isActive",false);
+                    object.put("isActive", false);
+                    object.saveInBackground();
+                }
+            }
+        });
+
+        ParseQuery<ParseObject> queryNext = ParseQuery.getQuery("question");
+        queryNext.whereEqualTo("isNext", true);
+        queryNext.getFirstInBackground(new GetCallback<ParseObject>() {
+
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (object == null) {
+                    // TODO: If we cant get the What do??
+                    Log.i(TAG, "Couldnt pull down " + e);
+
+                } else {
+
+                    object.put("isActive", true);
+                    object.put("isNext", false);
                     object.saveInBackground();
                 }
             }
         });
     }
 
-    public void uploadNewQuestion(){
+    // upload the players locally saved question to be the next in queue question
+    public void uploadNewQuestion() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
         query.fromLocalDatastore();
-        query.getFirstInBackground( new GetCallback<ParseObject>() {
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
 
                     ParseObject question = new ParseObject("question");
 
-                    question.put("question",object.getString("question"));
+                    question.put("question", object.getString("question"));
                     question.put("answer", object.getString("answer"));
                     question.put("imageLink", object.getString("imageLink"));//object.getString("imageLink")
-                    question.put("isActive",true);
-                    question.put("playerID",object.getString("playerID"));
+                    question.put("isActive", false);
+                    question.put("playerID", object.getString("playerID"));
+                    question.put("isNext", true);
 
                     question.saveInBackground();
                     question.unpinInBackground();

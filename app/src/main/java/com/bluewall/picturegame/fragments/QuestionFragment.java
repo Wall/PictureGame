@@ -2,10 +2,6 @@ package com.bluewall.picturegame.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,14 +14,11 @@ import android.widget.EditText;
 
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
-import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
 import com.bluewall.picturegame.task.ImgurUploadTask;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,7 +41,7 @@ public class QuestionFragment extends Fragment {
     private static final int RC_GALLERY_IMAGE = 1001;
     private static final int RC_CAPTURE_IMAGE = 1002;
 
-    String imageLinkFromPhoto ="";
+    String imageLinkFromPhoto = "";
 
     String TAG = "Question Fragment";
 
@@ -70,48 +63,39 @@ public class QuestionFragment extends Fragment {
         //otherwise put in a new question and save locally
         checkQuestionExists();
 
-
-
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
     }
 
     //do something with the image, eg. save to phone or imgur
-    private void handleSelectedImage(Uri imageUri){
+    private void handleSelectedImage(Uri imageUri) {
         imageLinkFromPhoto = imageUri.toString();
         imgurUploadTest(imageUri);
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int responseCode,
                                  Intent intent) {
         super.onActivityResult(requestCode, responseCode, intent);
-
         switch (requestCode) {
-
             //The returned uri from capture or select can be used directly in the imgur upload if we want
             case RC_CAPTURE_IMAGE:
                 Log.d(TAG, "onActivityResult: captured by camera");
             case RC_GALLERY_IMAGE:
                 //Do something with the returned image
-                if(intent!= null && intent.getData()!=null) {
+                if (intent != null && intent.getData() != null) {
                     Log.d(TAG, "onActivityResult: selected image uri =" + intent.getData().toString());
                     handleSelectedImage(intent.getData());
-                }else{
+                } else {
                     Log.d(TAG, "onActivityResult: no image selected or returned");
                 }
-
                 break;
-
         }
         super.onActivityResult(requestCode, responseCode, intent);
     }
 
     public void imgurUploadTest(Uri imageUri) {
-      //  Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rubbish);
-        Uri uri = imageUri;//BitmapUtils.getImageUri(MainActivity.getAppContext(), bitmap);
-        new ImgurUploadTask(uri, getActivity()) {
+        new ImgurUploadTask(imageUri, getActivity()) {
             @Override
             protected void onPostExecute(String id) {
                 String url = "http://i.imgur.com/" + id + ".jpg";
@@ -124,19 +108,13 @@ public class QuestionFragment extends Fragment {
 
     @OnClick(R.id.button)
     public void submit(View view) {
-        if(validate()) {
+        if (validate()) {
             ParseObject question = new ParseObject("question");
             question.put("question", editQText.getText().toString());
             question.put("answer", editAText.getText().toString());
-
-            // TODO: vvv When image capture is put in replace this hardcoded string vvv
             question.put("imageLink", imageLinkFromPhoto);
-
-            question.put("isActive", true);
+            //question.put("isActive", true);
             question.put("playerID", MainActivity.getPlayerId());
-
-            //Log.i(TAG,question.getString());
-
             question.pinInBackground();
 
             getFragmentManager().beginTransaction()
@@ -146,22 +124,16 @@ public class QuestionFragment extends Fragment {
     }
 
     private boolean validate() {
-        if(editQText.getText().toString().isEmpty())
+        if (editQText.getText().toString().isEmpty())
             return false;
-        if(editAText.getText().toString().isEmpty())
-            return false;
-        if(imageLinkFromPhoto.isEmpty())
-            return false;
-
-        return true;
+        return !editAText.getText().toString().isEmpty() && !imageLinkFromPhoto.isEmpty();
     }
 
     //check whether the current player has a local saved question
-    public void checkQuestionExists(){
-
+    public void checkQuestionExists() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
         query.fromLocalDatastore();
-        query.getFirstInBackground( new GetCallback<ParseObject>() {
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (object != null) {
                     getFragmentManager().beginTransaction()
@@ -177,7 +149,7 @@ public class QuestionFragment extends Fragment {
 
     //Use the camera to capture an image
     @OnClick(R.id.button_capture_image)
-    public void startImageCaptureIntent(){
+    public void startImageCaptureIntent() {
         Intent intent = new Intent();
         intent.setAction("android.media.action.IMAGE_CAPTURE");
         startActivityForResult(intent, RC_CAPTURE_IMAGE);
