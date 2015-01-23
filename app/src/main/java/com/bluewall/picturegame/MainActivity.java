@@ -20,6 +20,9 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.plus.Plus;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.SaveCallback;
 
 
 public class MainActivity extends Activity
@@ -58,6 +61,17 @@ public class MainActivity extends Activity
         Parse.enableLocalDatastore(context);
 
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
+
+        ParsePush.subscribeInBackground("", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i("com.parse.push", "successfully subscribed to the broadcast channel.");
+                } else {
+                    Log.i("com.parse.push", "failed to subscribe for push", e);
+                }
+            }
+        });
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
