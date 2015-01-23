@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
 import com.bluewall.picturegame.task.ImgurUploadTask;
+import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -64,6 +65,10 @@ public class QuestionFragment extends Fragment {
         checkQuestionExists();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        InputText inputText = (InputText) rootView.findViewById(R.id.inputText);
+        inputText.setAnswer("This is the answer");
+
         return rootView;
     }
 
