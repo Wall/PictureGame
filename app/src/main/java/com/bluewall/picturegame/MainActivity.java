@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.bluewall.picturegame.fragments.GameFragment;
 import com.bluewall.picturegame.fragments.QuestionFragment;
 import com.bluewall.picturegame.fragments.SignInFragment;
 import com.google.android.gms.common.ConnectionResult;
@@ -58,7 +59,10 @@ public class MainActivity extends Activity
         setContentView(R.layout.con_frag);
         context = getApplicationContext();
 
-        Parse.enableLocalDatastore(context);
+// Enable Crash Reporting
+       // ParseCrashReporting.enable(this);
+        Parse.enableLocalDatastore(this);
+
 
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
 
@@ -66,7 +70,7 @@ public class MainActivity extends Activity
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i("com.parse.push", "successfully subscribed to the broadcast channel.");
+                    Log.i("com.parse.push", "successfully subscribed to the Br channel.");
                 } else {
                     Log.i("com.parse.push", "failed to subscribe for push", e);
                 }
@@ -75,7 +79,7 @@ public class MainActivity extends Activity
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new SignInFragment())
+                    .add(R.id.container, new GameFragment())
                     .commit();
         }
 

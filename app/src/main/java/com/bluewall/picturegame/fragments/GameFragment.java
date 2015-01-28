@@ -20,7 +20,9 @@ import com.bluewall.picturegame.model.Question;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 
 import butterknife.ButterKnife;
@@ -62,6 +64,11 @@ public class GameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.game_screen, container, false);
         ButterKnife.inject(this, rootView);
 
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+
+
+
         //pull down the question set to active on the parse end
         ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
         query.whereEqualTo("isActive", true);
@@ -96,7 +103,8 @@ public class GameFragment extends Fragment {
         Log.i(TAG, currentQuestion.getAnswer());
 
         // Make sure the player is not answering their own question
-        if (!currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
+        //TODO:ADD BACK AFTER TESTING
+      //  if (!currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
             // TODO: Currently using a dirty equals for testing, will be updated with davids check alg.
             if (editTextAnswer.getText().toString().equals(currentQuestion.getAnswer())) {
                 updateOldQuestion();
@@ -107,11 +115,11 @@ public class GameFragment extends Fragment {
                         .replace(R.id.container, new WinScreenFragment())
                         .commit();
             }
-        } else {
-            Log.i(TAG, "Don't answer your own question ya pretzel");
-            new AlertDialog.Builder(getActivity()).setMessage("Don't answer your own question ya pretzel")
-                    .setNeutralButton(android.R.string.ok, null).create().show();
-        }
+       // } else {
+           // Log.i(TAG, "Don't answer your own question ya pretzel");
+          //  new AlertDialog.Builder(getActivity()).setMessage("Don't answer your own question ya pretzel")
+          //          .setNeutralButton(android.R.string.ok, null).create().show();
+       // }
 
     }
 

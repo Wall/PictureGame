@@ -15,6 +15,8 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.games.leaderboard.Leaderboards;
+import com.parse.ParseException;
+import com.parse.ParsePush;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,13 +41,21 @@ public class WinScreenFragment extends Fragment {
 
        // Games.Leaderboards.submitScore(MainActivity.getGoogleShiz(), getString(R.string.leaderBoardID), +1);
 
-        String REQUEST_LEADERBOARD = "100";
+        //TODO: UNCOMMENT THIS STUFF AFTER TESTING PUSHES
+        //String REQUEST_LEADERBOARD = "100";
 
 
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(MainActivity.getGoogleShiz(),
-               getString(R.string.leaderBoardID)), 100);
+       // startActivityForResult(Games.Leaderboards.getLeaderboardIntent(MainActivity.getGoogleShiz(),
+        //       getString(R.string.leaderBoardID)), 100);
 
-        updateLeaderboards(MainActivity.getGoogleShiz(),REQUEST_LEADERBOARD);
+        //updateLeaderboards(MainActivity.getGoogleShiz(),REQUEST_LEADERBOARD);
+
+
+        ParsePush push = new ParsePush();
+        push.setChannel("");
+        push.setMessage("answer");
+        push.sendInBackground();
+
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
