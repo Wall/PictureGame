@@ -66,8 +66,8 @@ public class QuestionFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        InputText inputText = (InputText) rootView.findViewById(R.id.inputText);
-        inputText.setAnswer("This is the answer");
+       // InputText inputText = (InputText) rootView.findViewById(R.id.inputText);
+       // inputText.setAnswer("This is the answer");
 
         return rootView;
     }

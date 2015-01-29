@@ -3,6 +3,8 @@ package com.bluewall.picturegame;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -10,20 +12,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bluewall.picturegame.fragments.GameFragment;
 import com.bluewall.picturegame.fragments.QuestionFragment;
 import com.bluewall.picturegame.fragments.SignInFragment;
+import com.bluewall.picturegame.fragments.WinScreenFragment;
+import com.bluewall.picturegame.model.Question;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.plus.Plus;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
 
 
 public class MainActivity extends Activity
@@ -50,27 +65,24 @@ public class MainActivity extends Activity
 
     public static Context context;
 
+    public static ProgressBar mProgress;
+    private int mProgressStatus = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.con_frag);
         context = getApplicationContext();
 
-// Enable Crash Reporting
-       // ParseCrashReporting.enable(this);
         Parse.enableLocalDatastore(this);
-
-
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
-
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i("com.parse.push", "successfully subscribed to the Br channel.");
+                    Log.i("com.parse.push", "successfully subscribed to the  channel.");
                 } else {
                     Log.i("com.parse.push", "failed to subscribe for push", e);
                 }
@@ -79,7 +91,7 @@ public class MainActivity extends Activity
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new GameFragment())
+                    .add(R.id.container, new SignInFragment())
                     .commit();
         }
 
@@ -90,9 +102,6 @@ public class MainActivity extends Activity
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .build();
-
-        // Enable Local Datastore.
-
     }
 
     public static void onSignInClick() {
@@ -255,6 +264,8 @@ public class MainActivity extends Activity
     void stopKeepingScreenOn() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
+
 
     public static Context getAppContext() {
         return context;

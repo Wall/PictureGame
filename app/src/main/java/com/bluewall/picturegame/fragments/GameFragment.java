@@ -2,6 +2,7 @@ package com.bluewall.picturegame.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bluewall.picturegame.GameActivity;
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
 import com.bluewall.picturegame.model.Question;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
+import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -44,7 +48,9 @@ public class GameFragment extends Fragment {
     ImageView imageView;
 
     @InjectView(R.id.editTextAnswer)
-    EditText editTextAnswer;
+    InputText editTextAnswer;
+
+    //InputText inputText = (InputText) rootView.findViewById(R.id.inputText);
 
     String TAG = "Game Fragment";
 
@@ -64,49 +70,31 @@ public class GameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.game_screen, container, false);
         ButterKnife.inject(this, rootView);
 
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-
-
-
-
-        //pull down the question set to active on the parse end
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
-        query.whereEqualTo("isActive", true);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-
-            @Override
-            public void done(ParseObject object, ParseException e) {
-                if (object == null) {
-                    // TODO: If we cant get the object try again ??
-                    Log.i(TAG, "Couldnt pull down " + e);
-
-                } else {
-                    currentQuestion = new Question();
-                    currentQuestion.setQuestion(object.getString("question"));
-                    currentQuestion.setAnswer(object.getString("answer"));
-                    currentQuestion.setImage(object.getString("imageLink"));
-                    currentQuestion.setPlayerID(object.getString("playerID"));
-                    questionText.setText(currentQuestion.getQuestion());
-                    imgurDownloadTest(currentQuestion.getImage());
-                }
-            }
-        });
+        GameActivity.getQuestion();
+        setQ();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
     }
 
+   public void setQ(){
+
+       questionText.setText(GameActivity.currentQuestion.getQuestion());
+       editTextAnswer.setAnswer(GameActivity.currentQuestion.getAnswer());
+       imgurDownloadTest(GameActivity.currentQuestion.getImage());
+   }
+
     @OnClick(R.id.AnswerButton)
     public void submit(View view) {
 
         Log.i(TAG, editTextAnswer.getText().toString());
-        Log.i(TAG, currentQuestion.getAnswer());
+        Log.i(TAG, GameActivity.currentQuestion.getAnswer());
 
         // Make sure the player is not answering their own question
-        //TODO:ADD BACK AFTER TESTING
-      //  if (!currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
+
+        if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
             // TODO: Currently using a dirty equals for testing, will be updated with davids check alg.
-            if (editTextAnswer.getText().toString().equals(currentQuestion.getAnswer())) {
+            if (editTextAnswer.getText().toString().equals(GameActivity.currentQuestion.getAnswer())) {
                 updateOldQuestion();
                 Log.i(TAG, "Correct");
                 uploadNewQuestion();
@@ -115,11 +103,18 @@ public class GameFragment extends Fragment {
                         .replace(R.id.container, new WinScreenFragment())
                         .commit();
             }
-       // } else {
-           // Log.i(TAG, "Don't answer your own question ya pretzel");
-          //  new AlertDialog.Builder(getActivity()).setMessage("Don't answer your own question ya pretzel")
-          //          .setNeutralButton(android.R.string.ok, null).create().show();
-       // }
+        } else {
+            Log.i(TAG, "Don't answer your own question ya pretzel");
+            new AlertDialog.Builder(getActivity()).setMessage("Don't answer your own question ya pretzel")
+                    .setNeutralButton(android.R.string.ok, null).create().show();
+
+            Context context = MainActivity.context;
+            CharSequence text = "Don't answer your own question ya pretzel!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
 
     }
 
