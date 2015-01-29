@@ -124,6 +124,11 @@ public class InputText extends EditText {
         numCharacters = answer.length() - numSpaces;
     }
 
+    public String getAnswer() {
+        return answer;
+    }
+
+
     /*
      * Builds the visible answer to be displayed
      */

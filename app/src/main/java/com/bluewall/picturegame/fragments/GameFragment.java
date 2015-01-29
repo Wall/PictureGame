@@ -87,13 +87,15 @@ public class GameFragment extends Fragment {
     @OnClick(R.id.AnswerButton)
     public void submit(View view) {
 
-        Log.i(TAG, editTextAnswer.getText().toString());
+
+        Log.i(TAG, editTextAnswer.getAnswer().toString());
         Log.i(TAG, GameActivity.currentQuestion.getAnswer());
 
         // Make sure the player is not answering their own question
 
         if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
             // TODO: Currently using a dirty equals for testing, will be updated with davids check alg.
+            //
             if (editTextAnswer.getText().toString().equals(GameActivity.currentQuestion.getAnswer())) {
                 updateOldQuestion();
                 Log.i(TAG, "Correct");
