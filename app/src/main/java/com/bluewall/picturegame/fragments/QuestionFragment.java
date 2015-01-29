@@ -1,7 +1,10 @@
 package com.bluewall.picturegame.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,17 +14,19 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bluewall.picturegame.Constants;
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
 import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
 import com.bluewall.picturegame.task.ImgurUploadTask;
-import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -67,9 +72,6 @@ public class QuestionFragment extends Fragment {
         checkQuestionExists();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-       // InputText inputText = (InputText) rootView.findViewById(R.id.inputText);
-       // inputText.setAnswer("This is the answer");
 
         return rootView;
     }
@@ -129,6 +131,15 @@ public class QuestionFragment extends Fragment {
                     .replace(R.id.container, new GameFragment())
                     .commit();
         }
+
+        else {
+            Context context = MainActivity.context;
+            CharSequence text = "You must fill out all fields!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 
     private boolean validate() {
@@ -162,15 +173,15 @@ public class QuestionFragment extends Fragment {
         intent.setAction("android.media.action.IMAGE_CAPTURE");
         startActivityForResult(intent, RC_CAPTURE_IMAGE);
     }
-// TODO: setup up properly
-/*    //Select an image from the gallery
+
+    //Select an image from the gallery
     @OnClick(R.id.button_select_image)
     public void startImageSelectIntent(){
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image*//*");
 
-        List<ResolveInfo> list = getPackageManager()
+        List<ResolveInfo> list = getActivity().getPackageManager()
                 .queryIntentActivities(intent,
                         PackageManager.MATCH_DEFAULT_ONLY);
         if (list.size() <= 0) {
@@ -178,5 +189,5 @@ public class QuestionFragment extends Fragment {
             return;
         }
         startActivityForResult(intent, RC_GALLERY_IMAGE);
-    }*/
+    }
 }

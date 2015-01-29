@@ -78,7 +78,7 @@
             android:resource="@drawable/ic_launcher" />
 
         <receiver
-            android:name=".TestBroadcastReciever"
+            android:name=".CustomParsePushBroadcastReciever"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.androidbook.parse.TestPushAction" />

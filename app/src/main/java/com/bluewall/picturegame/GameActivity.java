@@ -3,16 +3,13 @@ package com.bluewall.picturegame;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.bluewall.picturegame.fragments.GameFragment;
+import com.bluewall.picturegame.fragments.QuestionFragment;
 import com.bluewall.picturegame.model.Question;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-
 
 public class GameActivity extends Activity {
 
@@ -24,7 +21,7 @@ public class GameActivity extends Activity {
         setContentView(R.layout.con_frag);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, new GameFragment())
+                .replace(R.id.container, new QuestionFragment())
                 .commit();
 
     }

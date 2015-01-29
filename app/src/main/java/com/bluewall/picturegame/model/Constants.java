@@ -1,4 +1,4 @@
-package com.bluewall.picturegame;
+package com.bluewall.picturegame.model;
 
 /**
  * Created by dlee on 19/01/2015.

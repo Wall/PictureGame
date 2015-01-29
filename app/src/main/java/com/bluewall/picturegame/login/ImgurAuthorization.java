@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.bluewall.picturegame.Constants;
+import com.bluewall.picturegame.model.Constants;
 import com.bluewall.picturegame.MainActivity;
 
 import org.apache.http.NameValuePair;

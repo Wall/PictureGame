@@ -2,14 +2,15 @@ package com.bluewall.picturegame.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.bluewall.picturegame.CustomParsePushBroadcastReciever;
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
-import com.bluewall.picturegame.TestBroadcastReciever;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
@@ -18,6 +19,7 @@ import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.games.leaderboard.Leaderboards;
 import com.parse.ParseException;
 import com.parse.ParsePush;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +31,7 @@ import butterknife.OnClick;
  * Created by clazell on 22/01/2015.
  */
 public class WinScreenFragment extends Fragment {
+    String REQUEST_LEADERBOARD = "100";
     public WinScreenFragment() {
     }
 
@@ -40,20 +43,30 @@ public class WinScreenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.win_screen, container, false);
+        final View rootView = inflater.inflate(R.layout.win_screen, container, false);
         ButterKnife.inject(this, rootView);
 
-       // Games.Leaderboards.submitScore(MainActivity.getGoogleShiz(), getString(R.string.leaderBoardID), +1);
-
-        String REQUEST_LEADERBOARD = "100";
-
-
+        //Unsubscribe from the push broadcast channel so the winning client does not
+        // receive the push to refresh game fragment.
+        ParsePush.unsubscribeInBackground("", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i("com.parse.push", "successfully unsubscribed to the  channel.");
+                    sendMessageAsIntent(rootView);
+                    ParsePush.subscribeInBackground("");
+                } else {
+                    Log.i("com.parse.push", "failed to unsubscribe for push", e);
+                }
+            }
+        });
         startActivityForResult(Games.Leaderboards.getLeaderboardIntent(MainActivity.getGoogleShiz(),
-               getString(R.string.leaderBoardID)), 100);
+                getString(R.string.leaderBoardID)), 100);
 
         updateLeaderboards(MainActivity.getGoogleShiz(),REQUEST_LEADERBOARD);
 
-        sendMessageAsIntent(rootView);
+        //Send the parse push to update all other devices
+
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
@@ -62,13 +75,13 @@ public class WinScreenFragment extends Fragment {
     @OnClick(R.id.backButton)
     public void back() {
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, new GameFragment())
+                .replace(R.id.container, new QuestionFragment())
                 .commit();
     }
 
-    //Use JSON data to send a message to a broadcast receiver
-    public void sendMessageAsIntent(View v)
-    {
+    //Use JSON data to send a message to the custom broadcast receiver
+    //on the "" channel
+    public void sendMessageAsIntent(View v){
         JSONObject data = getJSONDataMessageForIntent();
         ParsePush push = new ParsePush();
         push.setChannel("");
@@ -77,20 +90,14 @@ public class WinScreenFragment extends Fragment {
     }
     //Notice how the 'action' attribute enables the
 //broadcast receiver behavior.
-    private JSONObject getJSONDataMessageForIntent()
-    {
-        try
-        {
+    private JSONObject getJSONDataMessageForIntent(){
+        try{
             JSONObject data = new JSONObject();
-            //Notice alert is not required
-            //data.put("alert", "Message from Intent");
-            //instead action is used
-            data.put("action", TestBroadcastReciever.ACTION);
+            data.put("action", CustomParsePushBroadcastReciever.ACTION);
             data.put("customdata", "custom data value");
             return data;
         }
-        catch(JSONException x)
-        {
+        catch(JSONException x){
             throw new RuntimeException("Something wrong with JSON", x);
         }
     }

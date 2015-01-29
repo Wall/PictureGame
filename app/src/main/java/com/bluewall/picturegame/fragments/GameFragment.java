@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +23,7 @@ import com.bluewall.picturegame.task.ImgurDownloadTask;
 import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 
 import butterknife.ButterKnife;
@@ -87,13 +84,11 @@ public class GameFragment extends Fragment {
     @OnClick(R.id.AnswerButton)
     public void submit(View view) {
 
-
         Log.i(TAG, editTextAnswer.getAnswer().toString());
         Log.i(TAG, GameActivity.currentQuestion.getAnswer());
         Log.i(TAG, "" + editTextAnswer.isCorrect());
 
         // Make sure the player is not answering their own question
-
         if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
 
             if (editTextAnswer.isCorrect()) {

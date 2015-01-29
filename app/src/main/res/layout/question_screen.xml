@@ -32,6 +32,12 @@
             android:text="take photo"
             android:id="@+id/button_capture_image"
             android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get photo"
+            android:id="@+id/button_select_image"
+            android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="wrap_content"

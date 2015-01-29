@@ -3,8 +3,6 @@ package com.bluewall.picturegame;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -13,33 +11,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.bluewall.picturegame.fragments.GameFragment;
 import com.bluewall.picturegame.fragments.QuestionFragment;
 import com.bluewall.picturegame.fragments.SignInFragment;
-import com.bluewall.picturegame.fragments.WinScreenFragment;
-import com.bluewall.picturegame.model.Question;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.plus.Plus;
-import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParseObject;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Iterator;
-
 
 public class MainActivity extends Activity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -264,8 +249,6 @@ public class MainActivity extends Activity
     void stopKeepingScreenOn() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-
-
 
     public static Context getAppContext() {
         return context;

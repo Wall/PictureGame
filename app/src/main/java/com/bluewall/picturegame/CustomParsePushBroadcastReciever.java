@@ -11,7 +11,7 @@ import java.util.Iterator;
 /**
  * Created by clazell on 29/01/2015.
  */
-public class TestBroadcastReciever
+public class CustomParsePushBroadcastReciever
         extends BroadcastReceiver {
     public static final String ACTION = "com.androidbook.parse.TestPushAction";
     public static final String PARSE_EXTRA_DATA_KEY = "com.parse.Data";
@@ -44,7 +44,7 @@ public class TestBroadcastReciever
             }
             intent = new Intent(context,GameActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-             context.startActivity(intent);
+            context.startActivity(intent);
         } catch (JSONException e) {
             Log.d(TAG, "JSONException: " + e.getMessage());
         }
