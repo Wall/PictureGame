@@ -124,10 +124,21 @@ public class InputText extends EditText {
         numCharacters = answer.length() - numSpaces;
     }
 
+    /**
+     * Returns current answer as inputted by user
+     * @return
+     */
     public String getAnswer() {
-        return answer;
+        return currentAnswer.toString();
     }
 
+    /**
+     * Returns whether the inputted answer is correct
+     * @return
+     */
+    public boolean isCorrect() {
+        return answer.replace(" ", "").equalsIgnoreCase(currentAnswer.toString());
+    }
 
     /*
      * Builds the visible answer to be displayed

@@ -90,13 +90,13 @@ public class GameFragment extends Fragment {
 
         Log.i(TAG, editTextAnswer.getAnswer().toString());
         Log.i(TAG, GameActivity.currentQuestion.getAnswer());
+        Log.i(TAG, "" + editTextAnswer.isCorrect());
 
         // Make sure the player is not answering their own question
 
         if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
-            // TODO: Currently using a dirty equals for testing, will be updated with davids check alg.
-            //
-            if (editTextAnswer.getText().toString().equals(GameActivity.currentQuestion.getAnswer())) {
+
+            if (editTextAnswer.isCorrect()) {
                 updateOldQuestion();
                 Log.i(TAG, "Correct");
                 uploadNewQuestion();
