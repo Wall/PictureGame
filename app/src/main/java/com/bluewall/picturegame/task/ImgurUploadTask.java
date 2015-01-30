@@ -47,6 +47,7 @@ public class ImgurUploadTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... params) {
         InputStream imageIn;
+        Log.i("URI",mImageUri.toString());
         try {
             imageIn = mActivity.getContentResolver().openInputStream(mImageUri);
         } catch (FileNotFoundException e) {

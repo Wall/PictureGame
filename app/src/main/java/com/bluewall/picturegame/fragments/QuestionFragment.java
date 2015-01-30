@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bluewall.picturegame.Constants;
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
 import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
+import com.bluewall.picturegame.model.Constants;
 import com.bluewall.picturegame.task.ImgurUploadTask;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -92,11 +92,12 @@ public class QuestionFragment extends Fragment {
             //The returned uri from capture or select can be used directly in the imgur upload if we want
             case RC_CAPTURE_IMAGE:
                 Log.d(TAG, "onActivityResult: captured by camera");
+                handleSelectedImage(intent.getData());
             case RC_GALLERY_IMAGE:
                 //Do something with the returned image
                 if (intent != null && intent.getData() != null) {
                     Log.d(TAG, "onActivityResult: selected image uri =" + intent.getData().toString());
-                    handleSelectedImage(intent.getData());
+                 
                 } else {
                     Log.d(TAG, "onActivityResult: no image selected or returned");
                 }
