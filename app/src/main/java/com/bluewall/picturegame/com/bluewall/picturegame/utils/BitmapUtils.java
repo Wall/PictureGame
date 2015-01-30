@@ -42,7 +42,7 @@ public class BitmapUtils {
     public static Uri resizeImage(int width, int height, Uri imagePath, Context context) {
         String filePath = getImagePathFromUri(imagePath, context);
         File imageFile = new File(filePath);
-        String resultPath = "";
+        File outImageFile = null;
 
         if (imageFile.exists()) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -61,8 +61,8 @@ public class BitmapUtils {
                 if(fos!=null){
                     fos.close();
                 }
-                File tmpFile = new File(context.getFilesDir(), RESIZED_IMAGE_FILE_NAME);
-                resultPath = tmpFile.getAbsolutePath();
+                outImageFile = new File(context.getFilesDir(), RESIZED_IMAGE_FILE_NAME);
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -70,7 +70,7 @@ public class BitmapUtils {
             }
         }
 
-        return Uri.parse(resultPath);
+        return Uri.fromFile(outImageFile);
     }
 
     /**
