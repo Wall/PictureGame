@@ -12,8 +12,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.bluewall.picturegame.Constants;
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
+import com.bluewall.picturegame.com.bluewall.picturegame.utils.BitmapUtils;
 import com.bluewall.picturegame.task.ImgurUploadTask;
 import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
@@ -74,8 +76,9 @@ public class QuestionFragment extends Fragment {
 
     //do something with the image, eg. save to phone or imgur
     private void handleSelectedImage(Uri imageUri) {
-        imageLinkFromPhoto = imageUri.toString();
-        imgurUploadTest(imageUri);
+        Uri tmp = BitmapUtils.resizeImage(Constants.MAX_IMAGE_WIDTH,Constants.MAX_IMAGE_HEIGHT,imageUri,getActivity());
+        imageLinkFromPhoto = tmp.toString();
+        imgurUploadTest(tmp);
     }
 
     @Override

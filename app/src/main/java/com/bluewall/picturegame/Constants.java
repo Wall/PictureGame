@@ -7,4 +7,7 @@ public class Constants {
 
     public static String MY_IMGUR_CLIENT_ID = "4711a5948320bf2";
     public static String MY_IMGUR_CLIENT_SECRET = "a6dec3a11721199f5fa1a9c62d9aa56f1d2e1ece";
+
+    public static int MAX_IMAGE_WIDTH = 500;
+    public static int MAX_IMAGE_HEIGHT = 500;
 }
