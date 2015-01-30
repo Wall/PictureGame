@@ -67,7 +67,7 @@ public class WinScreenFragment extends Fragment {
 
         //Send the parse push to update all other devices
 
-
+        MainActivity.hasQ = false;
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
     }

@@ -82,102 +82,106 @@ ADDED from AndroidManifest.xml:32:9
 		ADDED from AndroidManifest.xml:33:13
 activity#com.bluewall.picturegame.MainActivity
 ADDED from AndroidManifest.xml:36:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:39:13
 	android:label
 		ADDED from AndroidManifest.xml:38:13
 	android:name
 		ADDED from AndroidManifest.xml:37:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:39:13
+ADDED from AndroidManifest.xml:40:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:40:17
+ADDED from AndroidManifest.xml:41:17
 	android:name
-		ADDED from AndroidManifest.xml:40:25
+		ADDED from AndroidManifest.xml:41:25
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:42:17
+ADDED from AndroidManifest.xml:43:17
 	android:name
-		ADDED from AndroidManifest.xml:42:27
+		ADDED from AndroidManifest.xml:43:27
 service#com.parse.PushService
-ADDED from AndroidManifest.xml:46:9
+ADDED from AndroidManifest.xml:47:9
 	android:name
-		ADDED from AndroidManifest.xml:46:18
+		ADDED from AndroidManifest.xml:47:18
 receiver#com.parse.ParseBroadcastReceiver
-ADDED from AndroidManifest.xml:48:9
+ADDED from AndroidManifest.xml:49:9
 	android:name
-		ADDED from AndroidManifest.xml:48:19
+		ADDED from AndroidManifest.xml:49:19
 intent-filter#android.intent.action.BOOT_COMPLETED+android.intent.action.USER_PRESENT
-ADDED from AndroidManifest.xml:49:13
+ADDED from AndroidManifest.xml:50:13
 action#android.intent.action.BOOT_COMPLETED
-ADDED from AndroidManifest.xml:50:17
-	android:name
-		ADDED from AndroidManifest.xml:50:25
-action#android.intent.action.USER_PRESENT
 ADDED from AndroidManifest.xml:51:17
 	android:name
 		ADDED from AndroidManifest.xml:51:25
+action#android.intent.action.USER_PRESENT
+ADDED from AndroidManifest.xml:52:17
+	android:name
+		ADDED from AndroidManifest.xml:52:25
 receiver#com.parse.GcmBroadcastReceiver
-ADDED from AndroidManifest.xml:54:9
+ADDED from AndroidManifest.xml:55:9
 	android:permission
+		ADDED from AndroidManifest.xml:57:13
+	android:name
 		ADDED from AndroidManifest.xml:56:13
-	android:name
-		ADDED from AndroidManifest.xml:55:13
 intent-filter#com.bluewall.picturegame+com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION
-ADDED from AndroidManifest.xml:57:13
+ADDED from AndroidManifest.xml:58:13
 action#com.google.android.c2dm.intent.RECEIVE
-ADDED from AndroidManifest.xml:58:17
-	android:name
-		ADDED from AndroidManifest.xml:58:25
-action#com.google.android.c2dm.intent.REGISTRATION
 ADDED from AndroidManifest.xml:59:17
 	android:name
 		ADDED from AndroidManifest.xml:59:25
+action#com.google.android.c2dm.intent.REGISTRATION
+ADDED from AndroidManifest.xml:60:17
+	android:name
+		ADDED from AndroidManifest.xml:60:25
 category#com.bluewall.picturegame
-ADDED from AndroidManifest.xml:62:17
+ADDED from AndroidManifest.xml:63:17
 	android:name
-		ADDED from AndroidManifest.xml:62:27
+		ADDED from AndroidManifest.xml:63:27
 receiver#com.parse.ParsePushBroadcastReceiver
-ADDED from AndroidManifest.xml:65:9
+ADDED from AndroidManifest.xml:66:9
 	android:exported
+		ADDED from AndroidManifest.xml:68:13
+	android:name
 		ADDED from AndroidManifest.xml:67:13
-	android:name
-		ADDED from AndroidManifest.xml:66:13
 intent-filter#com.parse.push.intent.DELETE+com.parse.push.intent.OPEN+com.parse.push.intent.RECEIVE
-ADDED from AndroidManifest.xml:68:13
+ADDED from AndroidManifest.xml:69:13
 action#com.parse.push.intent.RECEIVE
-ADDED from AndroidManifest.xml:69:17
-	android:name
-		ADDED from AndroidManifest.xml:69:25
-action#com.parse.push.intent.DELETE
 ADDED from AndroidManifest.xml:70:17
 	android:name
 		ADDED from AndroidManifest.xml:70:25
-action#com.parse.push.intent.OPEN
+action#com.parse.push.intent.DELETE
 ADDED from AndroidManifest.xml:71:17
 	android:name
 		ADDED from AndroidManifest.xml:71:25
+action#com.parse.push.intent.OPEN
+ADDED from AndroidManifest.xml:72:17
+	android:name
+		ADDED from AndroidManifest.xml:72:25
 meta-data#com.parse.push.notification_icon
-ADDED from AndroidManifest.xml:76:9
+ADDED from AndroidManifest.xml:77:9
 	android:resource
+		ADDED from AndroidManifest.xml:79:13
+	android:name
 		ADDED from AndroidManifest.xml:78:13
-	android:name
-		ADDED from AndroidManifest.xml:77:13
 receiver#com.bluewall.picturegame.CustomParsePushBroadcastReciever
-ADDED from AndroidManifest.xml:80:9
+ADDED from AndroidManifest.xml:81:9
 	android:exported
+		ADDED from AndroidManifest.xml:83:13
+	android:name
 		ADDED from AndroidManifest.xml:82:13
-	android:name
-		ADDED from AndroidManifest.xml:81:13
 intent-filter#com.androidbook.parse.TestPushAction
-ADDED from AndroidManifest.xml:83:13
+ADDED from AndroidManifest.xml:84:13
 action#com.androidbook.parse.TestPushAction
-ADDED from AndroidManifest.xml:84:17
+ADDED from AndroidManifest.xml:85:17
 	android:name
-		ADDED from AndroidManifest.xml:84:25
+		ADDED from AndroidManifest.xml:85:25
 activity#com.bluewall.picturegame.GameActivity
-ADDED from AndroidManifest.xml:89:9
+ADDED from AndroidManifest.xml:90:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:93:13
 	android:label
-		ADDED from AndroidManifest.xml:91:13
+		ADDED from AndroidManifest.xml:92:13
 	android:name
-		ADDED from AndroidManifest.xml:90:13
+		ADDED from AndroidManifest.xml:91:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:support-v4:21.0.3:15:5

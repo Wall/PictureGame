@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 import com.bluewall.picturegame.fragments.QuestionFragment;
 import com.bluewall.picturegame.model.Question;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -19,6 +21,10 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.con_frag);
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new QuestionFragment())
@@ -62,9 +68,5 @@ public class GameActivity extends Activity {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-
-
-
-
 
 }

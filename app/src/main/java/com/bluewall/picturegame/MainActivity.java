@@ -53,6 +53,7 @@ public class MainActivity extends Activity
     public static ProgressBar mProgress;
     private int mProgressStatus = 0;
 
+    public static boolean hasQ = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

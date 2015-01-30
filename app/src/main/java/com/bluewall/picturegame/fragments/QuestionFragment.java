@@ -129,6 +129,7 @@ public class QuestionFragment extends Fragment {
             question.put("playerID", MainActivity.getPlayerId());
             question.pinInBackground();
 
+            MainActivity.hasQ = true;
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new GameFragment())
                     .commit();
@@ -152,11 +153,13 @@ public class QuestionFragment extends Fragment {
 
     //check whether the current player has a local saved question
     public void checkQuestionExists() {
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
         query.fromLocalDatastore();
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
-                if (object != null) {
+                if (object != null && MainActivity.hasQ == true) {
+                    Log.i("check it ","Q esistcs");
                     getFragmentManager().beginTransaction()
                             .replace(R.id.container, new GameFragment())
                             .commit();

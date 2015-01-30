@@ -22,9 +22,11 @@ import com.bluewall.picturegame.model.Question;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
 import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -157,13 +159,13 @@ public class GameFragment extends Fragment {
 
     // upload the players locally saved question to be the next in queue question
     public void uploadNewQuestion() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
         query.fromLocalDatastore();
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
 
-                    ParseObject question = new ParseObject("question");
+                    final ParseObject question = new ParseObject("question");
 
                     question.put("question", object.getString("question"));
                     question.put("answer", object.getString("answer"));
@@ -172,8 +174,22 @@ public class GameFragment extends Fragment {
                     question.put("playerID", object.getString("playerID"));
                     question.put("isNext", true);
 
-                    question.saveInBackground();
-                    question.unpinInBackground();
+
+                        question.saveInBackground(new SaveCallback() {
+
+                            @Override
+                            public void done(ParseException e) {
+
+                                   // question.delete();
+                                  //  question.unpin();
+                                    question.remove("question");
+                                    Log.i("Local del","remove");
+
+                            }
+                        });
+
+                    // question.unpinInBackground();
+
 
                 } else {
 
