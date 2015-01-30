@@ -5,12 +5,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 
 /**
  * Created by dlee on 22/01/2015.
  */
-public class InputText extends EditText {
+public class InputText extends EditText implements View.OnFocusChangeListener{
 
     public static final String TAG = "InputText";
 
@@ -76,22 +77,30 @@ public class InputText extends EditText {
 
             @Override
             public void afterTextChanged(Editable s) {
+                //Set Cursor to end of text
                 setSelection(s.length());
+                //TextWatcher methods are called after every text change, below avoids recursive calls to this method as a result of this method changing the text itself
                 if (!s.toString().equals(visibleAnswer)) {
                     int cursorPosition = getSelectionStart();
+                    // cursorPosition == 0 implies there is no text to begin with
                     if (cursorPosition > 0) {
+                        // Checks if the user pressed <backspace>
                         if (s.length() < preLength) {
                             if (currentAnswer.length() > 0) {
+                                // Remove trailing character in current answer
                                 currentAnswer.setLength(currentAnswer.length() - 1);
                             }
                         } else {
+                            // Checks if user has already filled up the inputView
                             if (currentAnswer.length() < numCharacters) {
+                                //Extract the trailing character and append it to currentAnswer
                                 char c = s.charAt(s.length() - 1);
                                 if (isValidChar(c)) {
                                     currentAnswer.append(c);
                                 }
                             }
                         }
+                        // Rebuild the visible answer based on changes made to currentAnswer above
                         buildVisibleAnswer();
                         InputText.this.setText(visibleAnswer);
                     }
@@ -111,10 +120,13 @@ public class InputText extends EditText {
      * @param answer
      */
     public void setAnswer(String answer) {
+        // Removes leading and trailing whitespace and sets everything to lower case
         this.answer = answer.trim().toLowerCase();
+        // Builds the text to be written to screen
         buildVisibleAnswer();
         this.setText(visibleAnswer);
 
+        // Counts the number of non-whitespace characters in string
         int numSpaces = 0;
         for (int i = 0; i < answer.length(); ++i) {
             if (answer.charAt(i) == ' ') {
@@ -147,25 +159,38 @@ public class InputText extends EditText {
         StringBuilder visible = new StringBuilder();
 
         int count = 0;
+        //Iterate over chars in string
         for (int i = 0; i < answer.length(); ++i) {
             if (answer.charAt(i) == ' ') {
                 visible.append("  ");
             } else {
+                // Append char or _ depending on what user has inputted thus far
                 if (count < currentAnswer.length()) {
                     visible.append(" " + currentAnswer.charAt(count) + " ");
                 } else {
                     visible.append(" _ ");
                 }
+                //Keep running count on non-space characters
                 ++count;
             }
         }
         visibleAnswer = visible.toString();
     }
 
+    /*
+     * Set cursor to end when first selecting View
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean ret = super.onTouchEvent(event);
         setSelection(getText().length());
         return ret;
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            setSelection(getText().length());
+        }
     }
 }
