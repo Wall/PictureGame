@@ -54,7 +54,7 @@ public class WinScreenFragment extends Fragment {
                 if (e == null) {
                     Log.i("com.parse.push", "successfully unsubscribed to the  channel.");
                     sendMessageAsIntent(rootView);
-                    ParsePush.subscribeInBackground("");
+
                 } else {
                     Log.i("com.parse.push", "failed to unsubscribe for push", e);
                 }

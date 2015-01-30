@@ -90,7 +90,7 @@ public class GameFragment extends Fragment {
 
         // Make sure the player is not answering their own question
         if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
-
+            //
             if (editTextAnswer.isCorrect()) {
                 updateOldQuestion();
                 Log.i(TAG, "Correct");

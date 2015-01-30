@@ -24,6 +24,7 @@ import com.bluewall.picturegame.task.ImgurUploadTask;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class QuestionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.question_screen, container, false);
         ButterKnife.inject(this, rootView);
-
+        ParsePush.subscribeInBackground("");
         //If the user has a question saved locally go straight to the game
         //otherwise put in a new question and save locally
         checkQuestionExists();

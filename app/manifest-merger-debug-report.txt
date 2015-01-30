@@ -160,7 +160,7 @@ ADDED from AndroidManifest.xml:76:9
 		ADDED from AndroidManifest.xml:78:13
 	android:name
 		ADDED from AndroidManifest.xml:77:13
-receiver#com.bluewall.picturegame.TestBroadcastReciever
+receiver#com.bluewall.picturegame.CustomParsePushBroadcastReciever
 ADDED from AndroidManifest.xml:80:9
 	android:exported
 		ADDED from AndroidManifest.xml:82:13
