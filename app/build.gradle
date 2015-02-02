@@ -6,7 +6,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("C:\\Users\\clazell\\TestKeyStore.jks")
+
             storePassword "android"
             keyAlias "testkey"
             keyPassword "android"

@@ -1,11 +1,13 @@
 package com.bluewall.picturegame.fragments;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.bluewall.picturegame.MainActivity;
 import com.bluewall.picturegame.R;
@@ -22,6 +24,8 @@ public class SignInFragment extends Fragment {
     @InjectView(R.id.button_sign_in)
     com.google.android.gms.common.SignInButton logInButton;
 
+    @InjectView(R.id.text_title)
+    TextView textTitle;
     public SignInFragment() {
     }
 
@@ -36,8 +40,8 @@ public class SignInFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_main, container, false);
         ButterKnife.inject(this, rootView);
 
-
-
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "axis.otf");
+        textTitle.setTypeface(font);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return rootView;
     }

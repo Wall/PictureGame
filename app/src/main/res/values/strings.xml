@@ -21,5 +21,6 @@
     <string name="button_select_text">Select</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title">pictcha</string>
 
 </resources>
