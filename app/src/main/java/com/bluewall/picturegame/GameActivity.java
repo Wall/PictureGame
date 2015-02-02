@@ -22,9 +22,7 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.con_frag);
 
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_id));
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new QuestionFragment())

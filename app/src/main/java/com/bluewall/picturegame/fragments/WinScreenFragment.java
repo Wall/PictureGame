@@ -60,10 +60,11 @@ public class WinScreenFragment extends Fragment {
                 }
             }
         });
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(MainActivity.getGoogleShiz(),
-                getString(R.string.leaderBoardID)), 100);
 
-        updateLeaderboards(MainActivity.getGoogleShiz(),REQUEST_LEADERBOARD);
+        //TODO: Uncomment after tesing
+       // startActivityForResult(Games.Leaderboards.getLeaderboardIntent(MainActivity.getGoogleShiz(),
+               // getString(R.string.leaderBoardID)), 100);
+        //updateLeaderboards(MainActivity.getGoogleShiz(),REQUEST_LEADERBOARD);
 
         //Send the parse push to update all other devices
 

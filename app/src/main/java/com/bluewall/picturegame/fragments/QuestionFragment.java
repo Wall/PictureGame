@@ -126,7 +126,8 @@ public class QuestionFragment extends Fragment {
             question.put("answer", editAText.getText().toString());
             question.put("imageLink", imageLinkFromPhoto);
             //question.put("isActive", true);
-            question.put("playerID", MainActivity.getPlayerId());
+            //TODO: uncomment
+           // question.put("playerID", MainActivity.getPlayerId());
             question.pinInBackground();
 
             MainActivity.hasQ = true;
@@ -146,9 +147,7 @@ public class QuestionFragment extends Fragment {
     }
 
     private boolean validate() {
-        if (editQText.getText().toString().isEmpty())
-            return false;
-        return !editAText.getText().toString().isEmpty() && !imageLinkFromPhoto.isEmpty();
+        return !editQText.getText().toString().isEmpty() && !editAText.getText().toString().isEmpty() && !imageLinkFromPhoto.isEmpty();
     }
 
     //check whether the current player has a local saved question
@@ -158,13 +157,11 @@ public class QuestionFragment extends Fragment {
         query.fromLocalDatastore();
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
-                if (object != null && MainActivity.hasQ == true) {
-                    Log.i("check it ","Q esistcs");
+                if (object != null && MainActivity.hasQ) {
+                    Log.i("check it ","Q exists");
                     getFragmentManager().beginTransaction()
                             .replace(R.id.container, new GameFragment())
                             .commit();
-                } else {
-
                 }
             }
         });

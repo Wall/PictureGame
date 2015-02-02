@@ -23,8 +23,6 @@ public class InputText extends EditText implements View.OnFocusChangeListener{
             ",.<>?:;+=-" +
             "!@#$%^&*()`~";
 
-    private Context context;
-
     /* Number of non space characters in the answer */
     private int numCharacters;
 
@@ -56,7 +54,7 @@ public class InputText extends EditText implements View.OnFocusChangeListener{
     /********************************************/
 
     private void init(Context context) {
-        this.context = context;
+        Context context1 = context;
         setCursorVisible(false);
         setBackgroundDrawable(null);
         //setTypeface(Typeface.MONOSPACE);

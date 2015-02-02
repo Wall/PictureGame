@@ -22,7 +22,6 @@ import com.bluewall.picturegame.model.Question;
 import com.bluewall.picturegame.task.ImgurDownloadTask;
 import com.bluewall.picturegame.view.InputText;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -86,12 +85,12 @@ public class GameFragment extends Fragment {
     @OnClick(R.id.AnswerButton)
     public void submit(View view) {
 
-        Log.i(TAG, editTextAnswer.getAnswer().toString());
+        Log.i(TAG, editTextAnswer.getAnswer());
         Log.i(TAG, GameActivity.currentQuestion.getAnswer());
         Log.i(TAG, "" + editTextAnswer.isCorrect());
 
         // Make sure the player is not answering their own question
-        if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
+        //if (!GameActivity.currentQuestion.getPlayerID().equals(MainActivity.getPlayerId())) {
             //
             if (editTextAnswer.isCorrect()) {
                 updateOldQuestion();
@@ -102,8 +101,8 @@ public class GameFragment extends Fragment {
                         .replace(R.id.container, new WinScreenFragment())
                         .commit();
             }
-        } else {
-            Log.i(TAG, "Don't answer your own question ya pretzel");
+       // } else {
+           /* Log.i(TAG, "Don't answer your own question ya pretzel");
             new AlertDialog.Builder(getActivity()).setMessage("Don't answer your own question ya pretzel")
                     .setNeutralButton(android.R.string.ok, null).create().show();
 
@@ -112,8 +111,8 @@ public class GameFragment extends Fragment {
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
+            toast.show();*/
+       // }
 
     }
 
@@ -128,9 +127,7 @@ public class GameFragment extends Fragment {
                 if (object == null) {
                     // TODO: If we cant get the What do??
                     Log.i(TAG, "Couldnt pull down " + e);
-
                 } else {
-
                     object.put("isActive", false);
                     object.saveInBackground();
                 }
@@ -171,7 +168,8 @@ public class GameFragment extends Fragment {
                     question.put("answer", object.getString("answer"));
                     question.put("imageLink", object.getString("imageLink"));//object.getString("imageLink")
                     question.put("isActive", false);
-                    question.put("playerID", object.getString("playerID"));
+                    //TODO:uc
+                   // question.put("playerID", object.getString("playerID"));
                     question.put("isNext", true);
 
 
@@ -190,8 +188,6 @@ public class GameFragment extends Fragment {
 
                     // question.unpinInBackground();
 
-
-                } else {
 
                 }
             }
