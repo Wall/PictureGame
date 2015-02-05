@@ -22,5 +22,9 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title">pictcha</string>
+    <string name="hint_question">Enter a question</string>
+    <string name="hint_answer">Enter an answer</string>
+    <string name="empty_answer_field">Enter your answer</string>
+    <string name="empty_question_field">Enter your question</string>
 
 </resources>

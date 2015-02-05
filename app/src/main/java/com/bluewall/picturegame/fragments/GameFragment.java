@@ -36,6 +36,8 @@ import butterknife.OnClick;
  */
 public class GameFragment extends Fragment {
 
+    public static final String QUESTION_OBJECT_TAG = "questionObject";
+
     @InjectView(R.id.AnswerButton)
     Button button;
 
@@ -118,7 +120,7 @@ public class GameFragment extends Fragment {
 
     // sets the old question to false and the next question to true
     public void updateOldQuestion() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(QUESTION_OBJECT_TAG);
         query.whereEqualTo("isActive", true);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
 
@@ -134,7 +136,7 @@ public class GameFragment extends Fragment {
             }
         });
 
-        ParseQuery<ParseObject> queryNext = ParseQuery.getQuery("question");
+        ParseQuery<ParseObject> queryNext = ParseQuery.getQuery(QUESTION_OBJECT_TAG);
         queryNext.whereEqualTo("isNext", true);
         queryNext.getFirstInBackground(new GetCallback<ParseObject>() {
 
@@ -156,13 +158,13 @@ public class GameFragment extends Fragment {
 
     // upload the players locally saved question to be the next in queue question
     public void uploadNewQuestion() {
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery(QUESTION_OBJECT_TAG);
         query.fromLocalDatastore();
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
 
-                    final ParseObject question = new ParseObject("question");
+                    final ParseObject question = new ParseObject(QUESTION_OBJECT_TAG);
 
                     question.put("question", object.getString("question"));
                     question.put("answer", object.getString("answer"));
@@ -180,7 +182,7 @@ public class GameFragment extends Fragment {
 
                                    // question.delete();
                                   //  question.unpin();
-                                    question.remove("question");
+                                    question.remove(QUESTION_OBJECT_TAG);
                                     Log.i("Local del","remove");
 
                             }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primary">#5a8b92</color>
+    <color name="primary">#52c0b0</color>
+    <color name="secondary">#ff4500</color>
+    <color name= "picture_light">#41bdbd</color>
+    <color name= "picture_dark">#00a9ac</color>
+    <color name="gray">#e4e2da</color>
+    <color name="background">#fcfcf7</color>
+    <color name="dark_gray">#d0cfc9</color>
 </resources>
