@@ -75,17 +75,17 @@ public class MainActivity extends Activity
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new QuestionFragment())
+                    .add(R.id.container, new SignInFragment())
                     .commit();
         }
-        //TODO: Uncomment after testing
+
         // Create the Google Api Client with access to Plus and Games
-        /*mGoogleApiClient = new GoogleApiClient.Builder(context)
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                .build();*/
+                .build();
     }
 
     public static void onSignInClick() {
@@ -122,7 +122,7 @@ public class MainActivity extends Activity
         } else {
             Log.d(TAG, "Connecting client.");
             //TODO
-         //   mGoogleApiClient.connect();
+            mGoogleApiClient.connect();
         }
         super.onStart();
     }

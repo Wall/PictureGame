@@ -170,8 +170,7 @@ public class QuestionFragment extends Fragment {
             question.put("answer", answer);
             question.put("imageLink", imageLinkFromPhoto);
             //question.put("isActive", true);
-            //TODO: uncomment
-            // question.put("playerID", MainActivity.getPlayerId());
+             question.put("playerID", MainActivity.getPlayerId());
             question.pinInBackground();
 
             MainActivity.hasQ = true;

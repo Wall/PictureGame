@@ -166,15 +166,15 @@ public class GameFragment extends Fragment {
 
                     final ParseObject question = new ParseObject(QUESTION_OBJECT_TAG);
 
+
                     question.put("question", object.getString("question"));
                     question.put("answer", object.getString("answer"));
                     question.put("imageLink", object.getString("imageLink"));//object.getString("imageLink")
                     question.put("isActive", false);
-                    //TODO:uc
-                   // question.put("playerID", object.getString("playerID"));
+                    question.put("playerID", object.getString("playerID"));
                     question.put("isNext", true);
 
-
+                    object.unpinInBackground();
                         question.saveInBackground(new SaveCallback() {
 
                             @Override
@@ -182,6 +182,7 @@ public class GameFragment extends Fragment {
 
                                    // question.delete();
                                   //  question.unpin();
+
                                     question.remove(QUESTION_OBJECT_TAG);
                                     Log.i("Local del","remove");
 

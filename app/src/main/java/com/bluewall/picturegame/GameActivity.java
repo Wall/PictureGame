@@ -30,7 +30,7 @@ public class GameActivity extends Activity {
 
     }
     public static void getQuestion(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("question");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("questionObject");
         query.whereEqualTo("isActive", true);
         try {
             ParseObject object =  query.getFirst();
