@@ -3,13 +3,19 @@ package com.bluewall.picturegame;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.bluewall.picturegame.fragments.QuestionFragment;
@@ -26,7 +32,10 @@ import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;
 
-public class MainActivity extends Activity
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class MainActivity extends FragmentActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     final static String TAG = "Image Hunt";
@@ -54,11 +63,13 @@ public class MainActivity extends Activity
     private int mProgressStatus = 0;
 
     public static boolean hasQ = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.con_frag);
+
         context = getApplicationContext();
 
 
@@ -199,6 +210,7 @@ public class MainActivity extends Activity
         (new AlertDialog.Builder(activity)).setMessage(message)
                 .setNeutralButton(android.R.string.ok, null).create().show();
     }
+
 
     public static void showActivityResultError(Activity activity, int requestCode, int actResp, int errorDescription) {
         if (activity == null) {

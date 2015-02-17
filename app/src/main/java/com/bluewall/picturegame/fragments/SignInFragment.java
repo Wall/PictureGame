@@ -3,10 +3,14 @@ package com.bluewall.picturegame.fragments;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bluewall.picturegame.MainActivity;
@@ -50,4 +54,30 @@ public class SignInFragment extends Fragment {
     public void submit(View view) {
         MainActivity.onSignInClick();
     }
+    public static class DialogFragmentHowToPlay extends DialogFragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.fragment_how_to_play, container, false);
+
+            // Watch for button clicks.
+            Button button = (Button) v.findViewById(R.id.close);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // When button is clicked, call up to owning activity.
+                    dismiss();
+                }
+            });
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            return v;
+        }
+    }
+
+
+    @OnClick(R.id.btn_instructions)
+    public void showInstructions(){
+        DialogFragment newFragment = new DialogFragmentHowToPlay();
+        newFragment.show(((FragmentActivity)getActivity()).getSupportFragmentManager(), "dialog");
+    }
+
 }

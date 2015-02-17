@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/background"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:gravity="center"
+        android:textSize="30sp"
+        android:id="@+id/text_title"
+        android:layout_gravity="center"
+        android:text="How to Play"
+        android:background="@color/primary"
+        android:textColor="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:drawableLeft="@drawable/num11"
+        android:drawablePadding="10sp"
+        android:layout_margin="10sp"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload a picture, a question about the picture and an answer. Eg: A picture of a native tree in your country..." />
+
+    <TextView
+        android:drawablePadding="10sp"
+        android:drawableLeft="@drawable/num2"
+        android:textSize="18sp"
+        android:layout_margin="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Try and guess the picture uploaded by other users." />
+
+    <TextView
+        android:drawablePadding="10sp"
+        android:drawableLeft="@drawable/num3"
+        android:textSize="18sp"
+        android:layout_margin="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="If you get it right, your photo is placed into the queue to be guessed by other players!" />
+
+
+    <Button
+        android:layout_marginTop="20sp"
+        android:background="@color/primary"
+        android:textColor="@color/background"
+        android:text="Got it!"
+        android:id="@+id/close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

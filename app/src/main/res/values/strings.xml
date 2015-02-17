@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_id">866950313297</string>
-    <string name="app_name">PictureGame</string>
+    <string name="app_name">Pictcha</string>
     <string name="action_settings">Settings</string>
     <string name="signing_in">Signing in with Google</string>
     <string name="signing_out">Signing out</string>
